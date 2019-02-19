@@ -1,0 +1,10 @@
+{
+  "path": "/testps/{var1}/{var2}",
+  "method": "GET",
+  "type": "powershell",
+  "main_file": "testps.ps1",
+  "parameters": [
+    "var1",
+    "var2"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "path": "/testpy/{arg}",
+  "method": "GET",
+  "type": "python",
+  "main_file": "testpy.py",
+  "parameters": [
+    "arg"
+  ]
+}

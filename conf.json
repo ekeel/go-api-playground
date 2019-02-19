@@ -1,0 +1,5 @@
+{
+  "port": ":8000",
+  "log_file": "/home/ekeeling/tmp/test.log",
+  "route_directory": "/home/ekeeling/go/src/plugsys/routes"
+}
