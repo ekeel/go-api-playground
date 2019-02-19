@@ -4,5 +4,6 @@
 # Tasks
 - [X] Route Plugins - Allow for custom routes in the form of JSON/code files.
 - [X] Concurrency Safe Logging - Allow for logging in a concurrently safe way.
+- [ ] Testing - Add automated testing (currently uses some basic functional pester testing).
 - [ ] Enable Okta Authentication - Require auth. via Okta to process calls.
 - [ ] Simple DSL - Allow for the creation of a plugin driven API via a simple DSL.
