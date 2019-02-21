@@ -6,6 +6,7 @@
 
 *All plugins are currently required to return a JSON string. It is possible that other configuration languages will be implemented in the future.*  
 
+## Table of Contents<!-- omit in toc -->
 - [go API Playground](#go-api-playground)
   - [Plugin Languages](#plugin-languages)
   - [Plugin Examples](#plugin-examples)
@@ -29,6 +30,8 @@
 | Python | MVP | This type of "route plugin" will execute `python /file/path.py`. There is currently no way to execute `python3 /file/path.py`, meaning that if you need to use python3 it must be aliased to python. |
 | Go | MVP | This type of "route plugin" will execute `go run /file/path.go`. In the future, JIT compilation of the go files will be possible. |
 | PowerShell | MVP | This type of "route plugin" will execute `pwsh -File /file/path.ps1`. Currently only PowerShell core is supported. In the future, the version of PowerShell (standard vs. core) will be selected based on the OS. |
+
+[ToC](#table-of-contents)
 
 ----
 ## Plugin Examples
@@ -56,6 +59,8 @@
 >
 >print("{\"test\":\"" + sys.argv[1] + "\"}")
 >```
+
+[ToC](#table-of-contents)
 
 <br>
 
@@ -91,6 +96,8 @@
 >}
 >```
 
+[ToC](#table-of-contents)
+
 <br>
 
 ### PowerShell
@@ -119,7 +126,7 @@
 >"[{`"arg1`": `"$Arg1`"}, {`"arg2`": `"$Arg2`"}]"
 >```
 
-<br>
+[ToC](#table-of-contents)
 
 ----
 ## Tasks
@@ -129,3 +136,5 @@
 - [ ] Testing - Add automated testing (currently uses some basic functional pester testing).
 - [ ] Enable Okta Authentication - Require auth. via Okta to process calls.
 - [ ] Simple DSL - Allow for the creation of a plugin driven API via a simple DSL.
+
+[ToC](#table-of-contents)
