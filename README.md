@@ -20,9 +20,9 @@ All plugins are currently required to return a JSON string. It is possible that 
 ## Plugin Examples
 
 ### Python
->
->#### Descriptor JSON (python_example_route.json)
->
+
+#### Descriptor JSON (python_example_route.json)
+
 >```json
 >{
 >  "path": "/testpy/{arg}",
@@ -46,9 +46,9 @@ All plugins are currently required to return a JSON string. It is possible that 
 <br>
 
 ### Go
->
->#### Descriptor JSON (go_example_route.json)
->
+
+#### Descriptor JSON (go_example_route.json)
+
 >```json
 >{
 >  "path": "/test",
@@ -59,9 +59,9 @@ All plugins are currently required to return a JSON string. It is possible that 
 >  "parameters": []
 >}
 >```
->
->#### Code File (go_example_route.go)
->
+
+#### Code File (go_example_route.go)
+
 >```go
 >package main
 >
@@ -80,9 +80,9 @@ All plugins are currently required to return a JSON string. It is possible that 
 <br>
 
 ### PowerShell
->
->#### Descriptor JSON (pwsh_example_route.json)
->
+
+#### Descriptor JSON (pwsh_example_route.json)
+
 >```json
 >{
 >  "path": "/testps/{var1}/{var2}",
@@ -95,9 +95,9 @@ All plugins are currently required to return a JSON string. It is possible that 
 >  ]
 >}
 >```
->
->#### Code File (pwsh_example_route.ps1)
->
+
+#### Code File (pwsh_example_route.ps1)
+
 >```powershell
 >$Arg1 = $args[0]
 >$Arg2 = $args[1]
