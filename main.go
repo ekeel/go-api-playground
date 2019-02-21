@@ -3,13 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"go-api-playground/cmd"
+	"go-api-playground/logging"
+	"go-api-playground/plugin"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"plugsys/cmd"
-	"plugsys/logging"
-	"plugsys/plugin"
+	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -19,10 +21,19 @@ import (
 var plugins plugin.Plugins
 var conf map[string]interface{}
 var logChannel chan string
+var plugUpdateChannel chan string
 var logger logging.Logger
+var router *mux.Router
 
 func main() {
-	confJSON, err := os.Open("/home/ekeeling/go/src/plugsys/conf.json")
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	confFilePath := path.Join(dir, "conf.json")
+
+	confJSON, err := os.Open(confFilePath)
 	handleErr(err)
 	defer confJSON.Close()
 
@@ -43,7 +54,12 @@ func main() {
 		}
 	}
 
-	router := mux.NewRouter()
+	plugUpdateChannel = make(chan string, 1024)
+
+	go plugin.CreatePluginWatcher(conf["route_directory"].(string), plugUpdateChannel, logChannel)
+	go processPluginUpdates()
+
+	router = mux.NewRouter()
 
 	for _, plg := range plugins.Plugins {
 		logger.Log(fmt.Sprintf("info: processed route plugin [Type: %s; Path: %s; Method: %s;]", plg.Type, plg.Path, plg.Method))
@@ -101,6 +117,38 @@ func processLogEntries() {
 
 		fmt.Println(msg)
 		lfile.WriteString(fmt.Sprintf("%s\n", msg))
+	}
+}
+
+func processPluginUpdates() {
+	for {
+		upd := <-plugUpdateChannel
+
+		if upd == "<EOC>" {
+			break
+		}
+		if len(upd) > 0 {
+			var errs []error
+			plugins, errs = plugin.GetPlugins(conf["route_directory"].(string))
+			if len(errs) > 0 {
+				for _, err := range errs {
+					logger.Log(fmt.Sprintf("error: unable to process one of the included plugins. %s", err.Error()))
+					log.Fatal(err)
+				}
+			}
+
+			for _, plg := range plugins.Plugins {
+				logger.Log(fmt.Sprintf("info: processed route plugin [Type: %s; Path: %s; Method: %s;]", plg.Type, plg.Path, plg.Method))
+
+				if plg.Type == "go" {
+					router.HandleFunc(plg.Path, ExecGoRoute).Methods(plg.Method)
+				} else if plg.Type == "python" {
+					router.HandleFunc(plg.Path, ExecPyRoute).Methods(plg.Method)
+				} else if plg.Type == "powershell" {
+					router.HandleFunc(plg.Path, ExecPsRoute).Methods(plg.Method)
+				}
+			}
+		}
 	}
 }
 

@@ -1,6 +1,6 @@
 package cmd
 
-import "plugsys/logging"
+import "go-api-playground/logging"
 
 // PyCommand is the struct that is used with python plugins.
 // It extends Command.

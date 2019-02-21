@@ -1,6 +1,6 @@
 package cmd
 
-import "plugsys/logging"
+import "go-api-playground/logging"
 
 // PsCommand is the struct that is used with powershell plugins.
 // It extends Command.

@@ -1,5 +1,5 @@
 {
   "port": ":8000",
-  "log_file": "/home/ekeeling/tmp/test.log",
-  "route_directory": "/home/ekeeling/go/src/plugsys/routes"
+  "log_file": "C:\\Users\\ekeeling\\tmp\\test.log",
+  "route_directory": "C:\\Users\\ekeeling\\OneDrive - Cox Automotive\\Documents\\golang\\src\\go-api-playground\\routes"
 }

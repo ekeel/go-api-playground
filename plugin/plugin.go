@@ -35,14 +35,14 @@ func GetPlugins(pluginDir string) (Plugins, []error) {
 	var errors []error
 	var plugins Plugins
 
-	files, err := ioutil.ReadDir("/home/ekeeling/go/src/plugsys/routes")
+	files, err := ioutil.ReadDir(pluginDir)
 	if err != nil {
 		return plugins, append(errors, err)
 	}
 
 	for _, f := range files {
 		if strings.Contains(f.Name(), ".json") {
-			fpath := path.Join("/home/ekeeling/go/src/plugsys/routes", f.Name())
+			fpath := path.Join(pluginDir, f.Name())
 
 			plugcJSON, err := os.Open(fpath)
 			if err != nil {

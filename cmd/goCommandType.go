@@ -1,6 +1,6 @@
 package cmd
 
-import "plugsys/logging"
+import "go-api-playground/logging"
 
 // GoCommand is the struct that is used with go plugins.
 // It extends Command.
