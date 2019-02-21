@@ -1,7 +1,9 @@
 # go API Playground
+
 *A playground for testing go API features.*
 
-# Tasks
+## Tasks
+
 - [X] Route Plugins - Allow for custom routes in the form of JSON/code files.
 - [X] Concurrency Safe Logging - Allow for logging in a concurrently safe way.
 - [ ] Testing - Add automated testing (currently uses some basic functional pester testing).
