@@ -2,9 +2,9 @@
 
 *A playground for testing go API features.*  
 
-The current API allows for creating routes based on "route plugins". These "route plugins" are made up of a JSON descriptor and a code file. The coding languages that can currently be used are listed below.  
+*The current API allows for creating routes based on "route plugins". These "route plugins" are made up of a JSON descriptor and a code file. The coding languages that can currently be used are listed below.*  
 
-All plugins are currently required to return a JSON string. It is possible that other configuration languages will be implemented in the future.  
+*All plugins are currently required to return a JSON string. It is possible that other configuration languages will be implemented in the future.*  
 
 - [go API Playground](#go-api-playground)
   - [Plugin Languages](#plugin-languages)
