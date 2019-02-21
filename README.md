@@ -19,7 +19,7 @@ All plugins are currently required to return a JSON string. It is possible that 
 ----
 ## Plugin Examples
 
->### Python
+### Python
 >
 >#### Descriptor JSON (python_example_route.json)
 >
@@ -45,7 +45,7 @@ All plugins are currently required to return a JSON string. It is possible that 
 
 <br>
 
->### Go
+### Go
 >
 >#### Descriptor JSON (go_example_route.json)
 >
@@ -79,7 +79,7 @@ All plugins are currently required to return a JSON string. It is possible that 
 
 <br>
 
->### PowerShell
+### PowerShell
 >
 >#### Descriptor JSON (pwsh_example_route.json)
 >
