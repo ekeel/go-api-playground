@@ -34,9 +34,9 @@ All plugins are currently required to return a JSON string. It is possible that 
 >  ]
 >}
 >```
->
->#### Code File (python_example_route.py)
->
+
+#### Code File (python_example_route.py)
+
 >```python
 >import sys
 >
