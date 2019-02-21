@@ -1,3 +1,4 @@
+// Package cmd contains the structs and methods for executing API route plugins.
 package cmd
 
 import (
@@ -14,13 +15,10 @@ type Command struct {
 }
 
 // Exec executes the plugin.
-// --------------------------------------------------------------
 // Arguments:
-// --------------------------------------------------------------
 // Returns:
 //   string holding the JSON from the plugin
 //   error that occurred during plugin execution, if any.
-// --------------------------------------------------------------
 func (cmd *Command) Exec() (string, error) {
 	errString := ""
 

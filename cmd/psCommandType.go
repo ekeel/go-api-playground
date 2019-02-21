@@ -1,6 +1,7 @@
+// Package cmd contains the structs and methods for executing API route plugins.
 package cmd
 
-import "plugsys/logging"
+import "go-api-playground/logging"
 
 // PsCommand is the struct that is used with powershell plugins.
 // It extends Command.
@@ -14,11 +15,8 @@ type PsCommand struct {
 }
 
 // Init sets the Cmd to "pwsh", adds the "-File" argument, and appends any user provided args if any.
-// --------------------------------------------------------------
 // Arguments:
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func (pc *PsCommand) Init() {
 	pc.Cmd = "pwsh"
 	pc.Arguments = []string{"-File", pc.FilePath}

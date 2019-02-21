@@ -1,6 +1,7 @@
+// Package cmd contains the structs and methods for executing API route plugins.
 package cmd
 
-import "plugsys/logging"
+import "go-api-playground/logging"
 
 // GoCommand is the struct that is used with go plugins.
 // It extends Command.
@@ -14,11 +15,8 @@ type GoCommand struct {
 }
 
 // Init sets the Cmd to "go", add the "run" argument, and appends any user provided args if any.
-// --------------------------------------------------------------
 // Arguments:
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func (gc *GoCommand) Init() {
 	gc.Cmd = "go"
 	gc.Arguments = []string{"run", gc.FilePath}

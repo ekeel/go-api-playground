@@ -1,5 +1,6 @@
 {
   "path": "/test",
+  
   "method": "GET",
   "type": "go",
   "main_file": "default.go",

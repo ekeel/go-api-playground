@@ -3,13 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"go-api-playground/cmd"
+	"go-api-playground/logging"
+	"go-api-playground/plugin"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
-	"plugsys/cmd"
-	"plugsys/logging"
-	"plugsys/plugin"
+	"path"
+	"path/filepath"
 	"regexp"
 	"strings"
 
@@ -19,10 +21,19 @@ import (
 var plugins plugin.Plugins
 var conf map[string]interface{}
 var logChannel chan string
+var plugUpdateChannel chan string
 var logger logging.Logger
+var router *mux.Router
 
 func main() {
-	confJSON, err := os.Open("/home/ekeeling/go/src/plugsys/conf.json")
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	confFilePath := path.Join(dir, "conf.json")
+
+	confJSON, err := os.Open(confFilePath)
 	handleErr(err)
 	defer confJSON.Close()
 
@@ -32,7 +43,8 @@ func main() {
 
 	logChannel = make(chan string, 1024)
 	logger = logging.NewLogger(conf["log_file"].(string), logChannel)
-	go processLogEntries()
+	// go processLogEntries()
+	go logger.ProcessLogEntries()
 
 	var errs []error
 	plugins, errs = plugin.GetPlugins(conf["route_directory"].(string))
@@ -43,7 +55,12 @@ func main() {
 		}
 	}
 
-	router := mux.NewRouter()
+	plugUpdateChannel = make(chan string, 1024)
+
+	go plugin.CreatePluginWatcher(conf["route_directory"].(string), plugUpdateChannel, logChannel)
+	go processPluginUpdates()
+
+	router = mux.NewRouter()
 
 	for _, plg := range plugins.Plugins {
 		logger.Log(fmt.Sprintf("info: processed route plugin [Type: %s; Path: %s; Method: %s;]", plg.Type, plg.Path, plg.Method))
@@ -65,53 +82,52 @@ func main() {
 }
 
 // handleErr checks if err is nil and calls a fatal log if it is not.
-// --------------------------------------------------------------
 // Arguments:
 //   err is the error to check if nil
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func handleErr(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-// processLogEntries is run as a go routine and captures the messages
-//   from the LogChannel and writes them to the log file.
-// --------------------------------------------------------------
-// Arguments:
-// --------------------------------------------------------------
-// Returns:
-// --------------------------------------------------------------
-func processLogEntries() {
-	lfile, err := os.Create(logger.OutputFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer lfile.Close()
-
+func processPluginUpdates() {
 	for {
-		msg := <-logChannel
+		upd := <-plugUpdateChannel
 
-		if msg == "<EOC>" {
+		if upd == "<EOC>" {
 			break
 		}
+		if len(upd) > 0 {
+			var errs []error
+			plugins, errs = plugin.GetPlugins(conf["route_directory"].(string))
+			if len(errs) > 0 {
+				for _, err := range errs {
+					logger.Log(fmt.Sprintf("error: unable to process one of the included plugins. %s", err.Error()))
+					log.Fatal(err)
+				}
+			}
 
-		fmt.Println(msg)
-		lfile.WriteString(fmt.Sprintf("%s\n", msg))
+			for _, plg := range plugins.Plugins {
+				logger.Log(fmt.Sprintf("info: processed route plugin [Type: %s; Path: %s; Method: %s;]", plg.Type, plg.Path, plg.Method))
+
+				if plg.Type == "go" {
+					router.HandleFunc(plg.Path, ExecGoRoute).Methods(plg.Method)
+				} else if plg.Type == "python" {
+					router.HandleFunc(plg.Path, ExecPyRoute).Methods(plg.Method)
+				} else if plg.Type == "powershell" {
+					router.HandleFunc(plg.Path, ExecPsRoute).Methods(plg.Method)
+				}
+			}
+		}
 	}
 }
 
 // ExecPyRoute executes a python route plugin.
-// --------------------------------------------------------------
 // Arguments:
 //   w is the ResponseWriter
 //   r is the pointer to the Request
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func ExecPyRoute(w http.ResponseWriter, r *http.Request) {
 	var runVars []string
 
@@ -157,13 +173,10 @@ func ExecPyRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 // ExecGoRoute executes a go route plugin.
-// --------------------------------------------------------------
 // Arguments:
 //   w is the ResponseWriter
 //   r is the pointer to the Request
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func ExecGoRoute(w http.ResponseWriter, r *http.Request) {
 	var runVars []string
 
@@ -209,13 +222,10 @@ func ExecGoRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 // ExecPsRoute executes a powershell route plugin.
-// --------------------------------------------------------------
 // Arguments:
 //   w is the ResponseWriter
 //   r is the pointer to the Request
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func ExecPsRoute(w http.ResponseWriter, r *http.Request) {
 	var runVars []string
 
