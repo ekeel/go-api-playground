@@ -1,3 +1,4 @@
+// Package cmd contains the structs and methods for executing API route plugins.
 package cmd
 
 import "go-api-playground/logging"
@@ -14,11 +15,8 @@ type PyCommand struct {
 }
 
 // Init sets the Cmd to "python" and appends any user provided args if any.
-// --------------------------------------------------------------
 // Arguments:
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func (pc *PyCommand) Init() {
 	pc.Cmd = "python"
 	pc.Arguments = []string{pc.FilePath}

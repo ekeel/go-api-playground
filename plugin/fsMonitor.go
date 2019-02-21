@@ -1,3 +1,4 @@
+// Package plugin contains the code for handling API route plugins.
 package plugin
 
 import (
@@ -10,6 +11,12 @@ import (
 
 var logger logging.Logger
 
+// CreatePluginWatcher creates a FS watcher using fsnotify to re-load plugins when they are changed.
+// Arguments:
+//   dir is the path to to directory to monitor for changes.
+//   plugUpdateChan the channel to publish change events to.
+//   logChan the channel to publish messages to for logging.
+// Returns:
 func CreatePluginWatcher(dir string, plugUpdateChan chan string, logChan chan string) {
 	logger = logging.NewLogger("", logChan)
 

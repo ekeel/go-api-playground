@@ -43,7 +43,8 @@ func main() {
 
 	logChannel = make(chan string, 1024)
 	logger = logging.NewLogger(conf["log_file"].(string), logChannel)
-	go processLogEntries()
+	// go processLogEntries()
+	go logger.ProcessLogEntries()
 
 	var errs []error
 	plugins, errs = plugin.GetPlugins(conf["route_directory"].(string))
@@ -81,42 +82,12 @@ func main() {
 }
 
 // handleErr checks if err is nil and calls a fatal log if it is not.
-// --------------------------------------------------------------
 // Arguments:
 //   err is the error to check if nil
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func handleErr(err error) {
 	if err != nil {
 		log.Fatal(err)
-	}
-}
-
-// processLogEntries is run as a go routine and captures the messages
-//   from the LogChannel and writes them to the log file.
-// --------------------------------------------------------------
-// Arguments:
-// --------------------------------------------------------------
-// Returns:
-// --------------------------------------------------------------
-func processLogEntries() {
-	lfile, err := os.Create(logger.OutputFile)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer lfile.Close()
-
-	for {
-		msg := <-logChannel
-
-		if msg == "<EOC>" {
-			break
-		}
-
-		fmt.Println(msg)
-		lfile.WriteString(fmt.Sprintf("%s\n", msg))
 	}
 }
 
@@ -153,13 +124,10 @@ func processPluginUpdates() {
 }
 
 // ExecPyRoute executes a python route plugin.
-// --------------------------------------------------------------
 // Arguments:
 //   w is the ResponseWriter
 //   r is the pointer to the Request
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func ExecPyRoute(w http.ResponseWriter, r *http.Request) {
 	var runVars []string
 
@@ -205,13 +173,10 @@ func ExecPyRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 // ExecGoRoute executes a go route plugin.
-// --------------------------------------------------------------
 // Arguments:
 //   w is the ResponseWriter
 //   r is the pointer to the Request
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func ExecGoRoute(w http.ResponseWriter, r *http.Request) {
 	var runVars []string
 
@@ -257,13 +222,10 @@ func ExecGoRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 // ExecPsRoute executes a powershell route plugin.
-// --------------------------------------------------------------
 // Arguments:
 //   w is the ResponseWriter
 //   r is the pointer to the Request
-// --------------------------------------------------------------
 // Returns:
-// --------------------------------------------------------------
 func ExecPsRoute(w http.ResponseWriter, r *http.Request) {
 	var runVars []string
 
