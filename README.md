@@ -4,7 +4,21 @@
 
 The current API allows for creating routes based on "route plugins". These "route plugins" are made up of a JSON descriptor and a code file. The coding languages that can currently be used are listed below.  
 
-All plugins are currently required to return a JSON string. It is possible that other configuration languages will be implemented in the future.
+All plugins are currently required to return a JSON string. It is possible that other configuration languages will be implemented in the future.  
+
+- [go API Playground](#go-api-playground)
+  - [Plugin Languages](#plugin-languages)
+  - [Plugin Examples](#plugin-examples)
+    - [Python](#python)
+      - [Descriptor JSON (python_example_route.json)](#descriptor-json-python_example_routejson)
+      - [Code File (python_example_route.py)](#code-file-python_example_routepy)
+    - [Go](#go)
+      - [Descriptor JSON (go_example_route.json)](#descriptor-json-go_example_routejson)
+      - [Code File (go_example_route.go)](#code-file-go_example_routego)
+    - [PowerShell](#powershell)
+      - [Descriptor JSON (pwsh_example_route.json)](#descriptor-json-pwsh_example_routejson)
+      - [Code File (pwsh_example_route.ps1)](#code-file-pwsh_example_routeps1)
+  - [Tasks](#tasks)
 
 ----
 ## Plugin Languages
