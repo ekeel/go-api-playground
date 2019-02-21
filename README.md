@@ -43,6 +43,8 @@ All plugins are currently required to return a JSON string. It is possible that 
 >print("{\"test\":\"" + sys.argv[1] + "\"}")
 >```
 
+<br>
+
 >### Go
 >
 >#### Descriptor JSON (go_example_route.json)
@@ -75,6 +77,8 @@ All plugins are currently required to return a JSON string. It is possible that 
 >}
 >```
 
+<br>
+
 >### PowerShell
 >
 >#### Descriptor JSON (pwsh_example_route.json)
@@ -100,6 +104,8 @@ All plugins are currently required to return a JSON string. It is possible that 
 >
 >"[{`"arg1`": `"$Arg1`"}, {`"arg2`": `"$Arg2`"}]"
 >```
+
+<br>
 
 ----
 ## Tasks
